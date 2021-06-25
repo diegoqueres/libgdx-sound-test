@@ -17,7 +17,7 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
 
-    version = '0.1'
+    version = '1.0'
     ext {
         appName = "libgdx-sound-test"
         gdxVersion = '1.10.0'

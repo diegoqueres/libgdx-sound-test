@@ -3,8 +3,10 @@ package net.diegoqueres.soundtest;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,6 +19,8 @@ import static net.diegoqueres.soundtest.utils.FontUtils.getTamX;
 import static net.diegoqueres.soundtest.utils.FontUtils.getTamY;
 
 public class SoundTest extends ApplicationAdapter {
+	Texture arrowKeys;
+	Texture musicSpeaker;
 	SpriteBatch batch;
 	BitmapFont font;
 	GlyphLayout glyphLayout;
@@ -31,6 +35,9 @@ public class SoundTest extends ApplicationAdapter {
 	public void create () {
 		Gdx.app.getInput().setInputProcessor(new InputCore(this));
 		batch = new SpriteBatch();
+		batch.enableBlending();
+		arrowKeys = new Texture(ARROW_KEYS_IMG);
+		musicSpeaker = new Texture(MUSIC_SPEAKER_IMG);
 		glyphLayout = new GlyphLayout();
 		font = FontUtils.generateFont();
 		initAudio();
@@ -48,9 +55,10 @@ public class SoundTest extends ApplicationAdapter {
 	}
 
 	private void timersUpdate() {
-		if (inputTimer > 0f) {
+		if (inputTimer > 0f)
 			inputTimer -= Gdx.app.getGraphics().getDeltaTime();
-		}
+		else if (inputTimer < 0f)
+			inputTimer = 0f;
 	}
 
 	private void checkMusic() {
@@ -65,17 +73,38 @@ public class SoundTest extends ApplicationAdapter {
 	}
 
 	private void drawDisplay() {
-		String textSoundName = "Playing sound: " + soundFileNames.get(idxSound);
-		drawLineDisplay(1, DISPLAY_LINES, textSoundName);
+		int screenWidth = Gdx.graphics.getWidth();
+		int screenHeight = Gdx.graphics.getHeight();
+		float baseY, width, height, offset;
+		final Color c = batch.getColor();
 
-		String textVolume = String.format("Volume: %.2f (Mouse wheel to change)", volume);
-		drawLineDisplay(2, DISPLAY_LINES, textVolume);
+		String textSoundName = "Playing: " + soundFileNames.get(idxSound);
+		baseY = drawLineDisplay(1, DISPLAY_LINES, textSoundName);
+		width = musicSpeaker.getWidth() * 1f;
+		height = musicSpeaker.getHeight() * 1f;
+		offset = 100f;
+		batch.setColor(c.r, c.g, c.b, .25f);
+		batch.draw(musicSpeaker,
+				((screenWidth - width)/2), ((baseY - height)+offset),
+				width, height
+		);
+		batch.setColor(c.r, c.g, c.b, 1f);
 
-		String textNext = "Press left button to play next music";
+		String textVolume = String.format("Volume: %.2f", volume);
+		baseY = drawLineDisplay(2, DISPLAY_LINES, textVolume);
+		width = arrowKeys.getWidth() * .25f;
+		height = arrowKeys.getHeight() * .25f;
+		offset = 10f;
+		batch.draw(arrowKeys,
+				((screenWidth - width)/2), ((baseY - height)-offset),
+				width, height
+		);
+
+		String textNext = "Press ENTER to play next";
 		drawLineDisplay(3, DISPLAY_LINES, textNext);
 	}
 
-	private void drawLineDisplay(int lineNumber, int maxLines, String text) {
+	private float drawLineDisplay(int lineNumber, int maxLines, String text) {
 		int screenWidth = Gdx.graphics.getWidth();
 		int screenHeight = Gdx.graphics.getHeight();
 		float heightDivision = screenHeight / maxLines;
@@ -83,6 +112,7 @@ public class SoundTest extends ApplicationAdapter {
 		float currentY = (screenHeight - (heightDivision*lineNumber)) + heightDivision / 2;
 		float y = currentY + (getTamY(glyphLayout, font, text) / 2);
 		font.draw(batch, text, x, y);
+		return currentY;
 	}
 
 	private void initAudio() {
@@ -103,17 +133,20 @@ public class SoundTest extends ApplicationAdapter {
 	}
 
 	public void changeSound() {
-		if (this.inputTimer <= 0f) this.idxSound++;
+		if (this.inputTimer > 0f) return;
+		this.idxSound++;
 		if (idxSound >= sounds.size) idxSound = 0;
 		this.inputTimer = TARGET_TIME_ACCEPT_CHANGE_SOUND;
 	}
 
 	public void increaseVolume() {
+		if (this.inputTimer > 0f) return;
 		if (this.volume + .01f < MAX_VOLUME)
 			this.volume += .01f;
 	}
 
 	public void decreaseVolume() {
+		if (this.inputTimer > 0f) return;
 		if (this.volume - .01f > MIN_VOLUME)
 			this.volume -= .01f;
 	}
@@ -122,5 +155,10 @@ public class SoundTest extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		font.dispose();
+		for (Music sound : sounds) {
+			sound.dispose();
+		}
+		arrowKeys.dispose();
+		musicSpeaker.dispose();
 	}
 }
