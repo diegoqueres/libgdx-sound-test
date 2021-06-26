@@ -14,7 +14,7 @@ public class FontUtils {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter =
                 new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = (int) (0.05 * Gdx.graphics.getHeight());
+        parameter.size = (int) (0.046 * Gdx.graphics.getHeight());
         parameter.color = Color.BLACK;
         return generator.generateFont(parameter);
     }
