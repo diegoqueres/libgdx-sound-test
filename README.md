@@ -18,3 +18,11 @@ With this application, you can easily test and choose ideal volume for each audi
 ![libgdx-sound-test usage](/imgs/demo.gif)
 * Press *ENTER* or *LEFT* mouse button to listen next song.
 * Press *UP/DOWN* key or scroll mouse wheel to increase/decrease volume.
+
+## Demo sounds credits
+* [Retro Puzzle Music Loop by Sirkoto51](https://freesound.org/s/378110/)
+* [Rock N' Roll by Migfus20](https://freesound.org/s/560443/)
+* [YEAH! by Adam Willoughby](https://freesound.org/s/411081/)
+
+## License
+[MIT](LICENSE)
