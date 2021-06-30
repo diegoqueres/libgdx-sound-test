@@ -20,9 +20,10 @@ With this application, you can easily test and choose ideal volume for each audi
 * Press *UP/DOWN* key or scroll mouse wheel to increase/decrease volume.
 
 ## Demo sounds credits
-* [Retro Puzzle Music Loop by Sirkoto51](https://freesound.org/s/378110/)
-* [Rock N' Roll by Migfus20](https://freesound.org/s/560443/)
-* [YEAH! by Adam Willoughby](https://freesound.org/s/411081/)
+* [Adventure by www.bensound.com](http://www.bensound.com)
+* [Retro Puzzle Music Loop by Sirkoto51](https://soundcloud.com/sirkoto51)
+* [Arpeggio 85 Bpm by DaveJf](http://flavioconcini.altervista.org)
+* [YEAH! by Adam Willoughby](https://freesound.org/people/shortiefoeva2/)
 
 ## License
 [MIT](LICENSE)
